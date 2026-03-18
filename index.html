@@ -112,10 +112,7 @@ td input[type="date"] { text-align: center; }
     <h1>ETF 存股投資追蹤</h1>
     <div>
       <div class="header-actions">
-        <button onclick="exportJSON()">匯出 JSON</button>
-        <button onclick="document.getElementById('import-file').click()">匯入 JSON</button>
-        <input type="file" id="import-file" accept=".json" style="display:none" onchange="importJSON(event)">
-        <button class="primary" onclick="syncToSheet()">同步到 Google Sheet</button>
+        <button class="primary" onclick="saveToSheet()">儲存</button>
       </div>
       <div class="sync-status" id="sync-status"></div>
     </div>
@@ -350,6 +347,7 @@ function render() {
   renderChart();
   renderSummary();
   saveToStorage();
+  markDirty();
 }
 
 function updateDerivedValues() {
@@ -550,43 +548,20 @@ function loadFromStorage() {
   }
 }
 
-// --- Import/Export ---
-function exportJSON() {
-  const data = { settings, entries, version: 1, exportDate: new Date().toISOString() };
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
-  const a = document.createElement('a');
-  a.href = URL.createObjectURL(blob);
-  a.download = `etf-tracker-${new Date().toISOString().slice(0,10)}.json`;
-  a.click();
-}
-
-function importJSON(event) {
-  const file = event.target.files[0];
-  if (!file) return;
-  const reader = new FileReader();
-  reader.onload = function(e) {
-    try {
-      const data = JSON.parse(e.target.result);
-      if (data.settings) settings = data.settings;
-      if (data.entries) entries = data.entries;
-      // Update inputs
-      document.getElementById('s-target').value = settings.target;
-      document.getElementById('s-current').value = settings.current;
-      document.getElementById('s-months').value = settings.months;
-      document.getElementById('s-return').value = settings.monthlyReturn;
-      document.getElementById('s-inflation').value = settings.monthlyInflation;
-      document.getElementById('s-etf').value = settings.etf;
-      render();
-      alert('匯入成功！');
-    } catch (err) {
-      alert('匯入失敗：檔案格式錯誤');
-    }
-  };
-  reader.readAsText(file);
-  event.target.value = '';
-}
-
 // --- Google Sheet Sync ---
+let hasUnsavedChanges = false;
+
+function markDirty() {
+  hasUnsavedChanges = true;
+}
+
+window.addEventListener('beforeunload', function(e) {
+  if (hasUnsavedChanges) {
+    e.preventDefault();
+    e.returnValue = '';
+  }
+});
+
 function saveGasUrl() {
   const url = document.getElementById('gas-url').value.trim();
   if (url) {
@@ -596,13 +571,13 @@ function saveGasUrl() {
   }
 }
 
-async function syncToSheet() {
+async function saveToSheet() {
   const url = localStorage.getItem(GAS_URL_KEY);
   if (!url) {
     alert('請先設定 Google Apps Script URL');
     return;
   }
-  setSyncStatus('同步中...', '');
+  setSyncStatus('儲存中...', '');
   try {
     const data = { settings, entries, version: 1 };
     const resp = await fetch(url, {
@@ -611,9 +586,10 @@ async function syncToSheet() {
       headers: { 'Content-Type': 'text/plain' },
       body: JSON.stringify(data)
     });
-    setSyncStatus('已同步 ' + new Date().toLocaleTimeString(), 'synced');
+    hasUnsavedChanges = false;
+    setSyncStatus('已儲存 ' + new Date().toLocaleTimeString(), 'synced');
   } catch (err) {
-    setSyncStatus('同步失敗: ' + err.message, 'error');
+    setSyncStatus('儲存失敗: ' + err.message, 'error');
   }
 }
 
