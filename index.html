@@ -7,27 +7,27 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f7fa; color: #333; -webkit-text-size-adjust: 100%; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #111; color: #e0e0e0; -webkit-text-size-adjust: 100%; }
 
-#login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.login-box { background: #fff; padding: 32px 24px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; width: 300px; }
-.login-box h1 { font-size: 20px; margin-bottom: 8px; }
-.login-box p { font-size: 13px; color: #888; margin-bottom: 24px; }
-.login-box input { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 20px; text-align: center; letter-spacing: 8px; outline: none; }
-.login-box input:focus { border-color: #667eea; }
-.login-box button { width: 100%; margin-top: 16px; padding: 14px; background: #667eea; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-.login-error { color: #e74c3c; font-size: 13px; margin-top: 8px; display: none; }
+#login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: #111; }
+.login-box { background: #1a1a1a; padding: 32px 24px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,0.5); text-align: center; width: 300px; border: 1px solid #333; }
+.login-box h1 { font-size: 20px; margin-bottom: 8px; color: #fff; }
+.login-box p { font-size: 13px; color: #666; margin-bottom: 24px; }
+.login-box input { width: 100%; padding: 14px; border: 1px solid #333; border-radius: 8px; font-size: 20px; text-align: center; letter-spacing: 8px; outline: none; background: #222; color: #fff; }
+.login-box input:focus { border-color: #00d4aa; }
+.login-box button { width: 100%; margin-top: 16px; padding: 14px; background: #fff; color: #111; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; font-weight: 600; }
+.login-error { color: #ff4757; font-size: 13px; margin-top: 8px; display: none; }
 
 #app { display: none; max-width: 1400px; margin: 0 auto; padding: 12px; }
-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 16px; }
-header h1 { font-size: 18px; }
-.header-actions button { padding: 10px 20px; border: none; border-radius: 8px; background: #667eea; color: #fff; cursor: pointer; font-size: 14px; font-weight: 600; }
-.sync-status { font-size: 11px; color: #999; margin-top: 4px; text-align: right; }
-.sync-status.synced { color: #27ae60; }
-.sync-status.error { color: #e74c3c; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #333; margin-bottom: 16px; }
+header h1 { font-size: 15px; white-space: nowrap; color: #fff; }
+.header-actions button { padding: 10px 20px; border: none; border-radius: 8px; background: #fff; color: #111; cursor: pointer; font-size: 14px; font-weight: 600; }
+.sync-status { font-size: 11px; color: #666; margin-top: 4px; text-align: right; }
+.sync-status.synced { color: #00d4aa; }
+.sync-status.error { color: #ff4757; }
 
-.settings-panel { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.settings-panel h2 { font-size: 15px; margin-bottom: 12px; cursor: pointer; user-select: none; }
+.settings-panel { background: #1a1a1a; border-radius: 10px; padding: 16px; margin-bottom: 16px; border: 1px solid #2a2a2a; }
+.settings-panel h2 { font-size: 15px; margin-bottom: 12px; cursor: pointer; user-select: none; color: #ccc; }
 .settings-panel h2::before { content: "▼ "; font-size: 11px; }
 .settings-panel.collapsed h2::before { content: "▶ "; }
 .settings-panel.collapsed .settings-grid,
@@ -35,57 +35,57 @@ header h1 { font-size: 18px; }
 .settings-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
 .setting-item { display: flex; flex-direction: column; gap: 4px; }
 .setting-item label { font-size: 12px; color: #888; }
-.setting-item input { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; -webkit-appearance: none; }
-.setting-item .hint { font-size: 11px; color: #aaa; }
-.derived-values { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; font-size: 12px; display: flex; flex-direction: column; gap: 4px; }
-.derived-values span { color: #667eea; font-weight: 600; }
+.setting-item input { padding: 10px; border: 1px solid #333; border-radius: 8px; font-size: 16px; -webkit-appearance: none; background: #222; color: #e0e0e0; }
+.setting-item .hint { font-size: 11px; color: #555; }
+.derived-values { margin-top: 12px; padding-top: 12px; border-top: 1px solid #2a2a2a; font-size: 12px; display: flex; flex-direction: column; gap: 4px; color: #999; }
+.derived-values span { color: #00d4aa; font-weight: 600; }
 
-.chart-container { background: #fff; border-radius: 10px; padding: 8px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.chart-container { background: #1a1a1a; border-radius: 10px; padding: 8px; margin-bottom: 16px; border: 1px solid #2a2a2a; }
 .chart-container canvas { max-height: 200px; }
 
 .summary-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
-.summary-card { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
-.summary-card .label { font-size: 11px; color: #999; }
-.summary-card .value { font-size: 18px; font-weight: 700; margin-top: 2px; }
-.summary-card .sub { font-size: 11px; color: #999; margin-top: 2px; }
+.summary-card { background: #1a1a1a; border-radius: 10px; padding: 12px; border: 1px solid #2a2a2a; }
+.summary-card .label { font-size: 11px; color: #666; }
+.summary-card .value { font-size: 18px; font-weight: 700; margin-top: 2px; color: #fff; }
+.summary-card .sub { font-size: 11px; color: #555; margin-top: 2px; }
 
 /* Table - desktop */
-.table-container { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow-x: auto; }
-.table-container h2 { font-size: 15px; margin-bottom: 12px; }
+.table-container { background: #1a1a1a; border-radius: 10px; padding: 16px; border: 1px solid #2a2a2a; overflow-x: auto; }
+.table-container h2 { font-size: 15px; margin-bottom: 12px; color: #ccc; }
 .table-actions { display: flex; gap: 8px; margin-bottom: 12px; }
-.table-actions button { padding: 10px 16px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; font-size: 14px; }
+.table-actions button { padding: 10px 16px; border: 1px solid #333; border-radius: 8px; background: #222; color: #ccc; cursor: pointer; font-size: 14px; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
-th { background: #f8f9fa; padding: 10px 8px; text-align: right; border-bottom: 2px solid #e0e0e0; white-space: nowrap; font-size: 12px; }
+th { background: #1e1e1e; padding: 10px 8px; text-align: right; border-bottom: 1px solid #333; white-space: nowrap; font-size: 12px; color: #888; }
 th:nth-child(1), th:nth-child(2) { text-align: center; }
-td { padding: 8px; text-align: right; border-bottom: 1px solid #f0f0f0; }
-td:nth-child(1) { text-align: center; font-weight: 600; color: #667eea; }
+td { padding: 8px; text-align: right; border-bottom: 1px solid #222; }
+td:nth-child(1) { text-align: center; font-weight: 600; color: #00d4aa; }
 td:nth-child(2) { text-align: center; }
-td input { width: 100%; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; text-align: right; }
+td input { width: 100%; padding: 4px 6px; border: 1px solid #333; border-radius: 4px; font-size: 13px; text-align: right; background: #222; color: #e0e0e0; }
 td input[type="date"] { text-align: center; }
-.calculated { color: #666; }
-.path-value { color: #667eea; font-weight: 500; }
-.positive { color: #27ae60; }
-.negative { color: #e74c3c; }
-.delete-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 2px 6px; }
-.delete-btn:hover { color: #e74c3c; }
+.calculated { color: #888; }
+.path-value { color: #00d4aa; font-weight: 500; }
+.positive { color: #00d4aa; }
+.negative { color: #ff4757; }
+.delete-btn { background: none; border: none; color: #555; cursor: pointer; font-size: 16px; padding: 2px 6px; }
+.delete-btn:hover { color: #ff4757; }
 
 /* Mobile cards */
 .cards-container { display: none; }
 
-.month-card { background: #fff; border-radius: 10px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-left: 3px solid #667eea; }
-.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
-.card-month { font-size: 16px; font-weight: 700; color: #667eea; }
-.card-date input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; min-height: 44px; }
-.card-delete { background: none; border: none; color: #ccc; font-size: 20px; padding: 4px 8px; cursor: pointer; }
-.card-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
-.card-field { display: flex; flex-direction: column; gap: 2px; }
-.card-field label { font-size: 11px; color: #888; }
-.card-field input { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; min-height: 44px; -webkit-appearance: none; }
+.month-card { background: #1a1a1a; border-radius: 10px; padding: 12px; margin-bottom: 10px; border: 1px solid #2a2a2a; border-left: 3px solid #00d4aa; overflow: hidden; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; gap: 4px; }
+.card-month { font-size: 14px; font-weight: 700; color: #00d4aa; white-space: nowrap; }
+.card-date input { padding: 4px; border: 1px solid #333; border-radius: 6px; font-size: 12px; min-height: 36px; max-width: 130px; background: #222; color: #ccc; }
+.card-delete { background: none; border: none; color: #555; font-size: 20px; padding: 4px; cursor: pointer; flex-shrink: 0; }
+.card-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 8px; }
+.card-field { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.card-field label { font-size: 11px; color: #666; }
+.card-field input { padding: 6px; border: 1px solid #333; border-radius: 6px; font-size: 13px; min-height: 40px; -webkit-appearance: none; width: 100%; max-width: 100%; background: #222; color: #e0e0e0; }
 .card-field .val { font-size: 14px; font-weight: 500; padding: 4px 0; }
-.card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 12px; color: #666; }
-.card-stats .stat-label { color: #999; }
-.card-stats .stat-val { font-weight: 600; }
-.card-stats .highlight { color: #667eea; }
+.card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 2px; font-size: 10px; color: #888; overflow: hidden; word-break: break-all; }
+.card-stats .stat-label { color: #666; }
+.card-stats .stat-val { font-weight: 600; color: #ccc; }
+.card-stats .highlight { color: #00d4aa; }
 .card-return { font-size: 14px; font-weight: 700; text-align: right; margin-top: 6px; }
 
 /* GAS config hidden */
@@ -186,6 +186,11 @@ td input[type="date"] { text-align: center; }
 
   <div class="table-container">
     <h2>月投資紀錄</h2>
+    <div style="margin-bottom:12px;">
+      <button onclick="addRow()" style="width:100%;padding:12px;border:1px dashed #444;border-radius:8px;background:#1a1a1a;color:#ccc;font-size:14px;cursor:pointer;">+ 新增月份</button>
+    </div>
+    <!-- Mobile cards -->
+    <div class="cards-container" id="cards-container"></div>
     <div class="table-actions">
       <button onclick="addRow()">+ 新增月份</button>
     </div>
@@ -197,11 +202,6 @@ td input[type="date"] { text-align: center; }
       </thead>
       <tbody id="data-tbody"></tbody>
     </table>
-    <!-- Mobile cards -->
-    <div class="cards-container" id="cards-container"></div>
-    <div style="margin-top:12px;">
-      <button onclick="addRow()" style="width:100%;padding:12px;border:1px dashed #ccc;border-radius:8px;background:#fafafa;font-size:14px;cursor:pointer;">+ 新增月份</button>
-    </div>
   </div>
 </div>
 
@@ -311,7 +311,9 @@ function renderTable() {
 
 function renderCards() {
   const results = computeAll();
-  document.getElementById('cards-container').innerHTML = results.map((r, i) => `
+  // Reverse: newest month on top
+  const indices = results.map((_, i) => i).reverse();
+  document.getElementById('cards-container').innerHTML = indices.map(i => { const r = results[i]; return `
     <div class="month-card">
       <div class="card-header">
         <span class="card-month">第 ${r.month} 月</span>
@@ -338,7 +340,7 @@ function renderCards() {
       </div>
       ${r.price > 0 ? `<div class="card-return ${r.returnRate >= 0 ? 'positive' : 'negative'}">${fmtPct(r.returnRate)}</div>` : ''}
     </div>
-  `).join('');
+  `; }).join('');
 }
 
 function renderChart() {
@@ -362,20 +364,20 @@ function renderChart() {
     data: {
       labels: months,
       datasets: [
-        { label: '存股路徑', data: pathData, borderColor: '#667eea', backgroundColor: 'rgba(102,126,234,0.1)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 },
-        { label: '實際現值', data: actualData, borderColor: '#27ae60', backgroundColor: 'rgba(39,174,96,0.1)', fill: false, tension: 0.1, pointRadius: mobile ? 5 : 4, borderWidth: 2, spanGaps: false }
+        { label: '存股路徑', data: pathData, borderColor: '#555', backgroundColor: 'rgba(85,85,85,0.1)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 },
+        { label: '實際現值', data: actualData, borderColor: '#00d4aa', backgroundColor: 'rgba(0,212,170,0.1)', fill: false, tension: 0.1, pointRadius: mobile ? 5 : 4, borderWidth: 2, spanGaps: false }
       ]
     },
     options: {
       responsive: true,
       maintainAspectRatio: true,
       plugins: {
-        legend: { position: 'top', labels: { boxWidth: 12, font: { size: mobile ? 11 : 12 } } },
+        legend: { position: 'top', labels: { boxWidth: 12, font: { size: mobile ? 11 : 12 }, color: '#888' } },
         tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${fmtShort(ctx.parsed.y)}` } }
       },
       scales: {
-        x: { title: { display: !mobile, text: '投資月數' }, ticks: { maxTicksLimit: mobile ? 6 : 12 } },
-        y: { title: { display: !mobile, text: '金額' }, ticks: { callback: v => fmtShort(v), maxTicksLimit: mobile ? 5 : 8 } }
+        x: { title: { display: !mobile, text: '投資月數', color: '#666' }, ticks: { maxTicksLimit: mobile ? 6 : 12, color: '#666' }, grid: { color: '#222' } },
+        y: { title: { display: !mobile, text: '金額', color: '#666' }, ticks: { callback: v => fmtShort(v), maxTicksLimit: mobile ? 5 : 8, color: '#666' }, grid: { color: '#222' } }
       }
     }
   });
@@ -402,7 +404,7 @@ function addRow() {
   entries.push({ month: lastMonth + 1, date: '', price: null, shares: null });
   render();
   if (isMobile()) {
-    document.getElementById('cards-container').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+    document.getElementById('cards-container').firstElementChild?.scrollIntoView({ behavior: 'smooth' });
   } else {
     document.getElementById('data-tbody').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
   }
