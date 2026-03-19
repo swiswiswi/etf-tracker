@@ -7,63 +7,59 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <style>
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f7fa; color: #333; }
+body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; background: #f5f7fa; color: #333; -webkit-text-size-adjust: 100%; }
 
-/* Login */
 #login-screen { display: flex; justify-content: center; align-items: center; min-height: 100vh; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); }
-.login-box { background: #fff; padding: 40px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; width: 320px; }
+.login-box { background: #fff; padding: 32px 24px; border-radius: 12px; box-shadow: 0 20px 60px rgba(0,0,0,0.3); text-align: center; width: 300px; }
 .login-box h1 { font-size: 20px; margin-bottom: 8px; }
 .login-box p { font-size: 13px; color: #888; margin-bottom: 24px; }
-.login-box input { width: 100%; padding: 12px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 18px; text-align: center; letter-spacing: 8px; outline: none; }
+.login-box input { width: 100%; padding: 14px; border: 2px solid #e0e0e0; border-radius: 8px; font-size: 20px; text-align: center; letter-spacing: 8px; outline: none; }
 .login-box input:focus { border-color: #667eea; }
-.login-box button { width: 100%; margin-top: 16px; padding: 12px; background: #667eea; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
-.login-box button:hover { background: #5a6fd6; }
+.login-box button { width: 100%; margin-top: 16px; padding: 14px; background: #667eea; color: #fff; border: none; border-radius: 8px; font-size: 16px; cursor: pointer; }
 .login-error { color: #e74c3c; font-size: 13px; margin-top: 8px; display: none; }
 
-/* Main App */
-#app { display: none; max-width: 1400px; margin: 0 auto; padding: 16px; }
-header { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 20px; }
-header h1 { font-size: 22px; }
-.header-actions { display: flex; gap: 8px; }
-.header-actions button { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 13px; }
-.header-actions button:hover { background: #f0f0f0; }
-.header-actions button.primary { background: #667eea; color: #fff; border-color: #667eea; }
-.header-actions button.primary:hover { background: #5a6fd6; }
+#app { display: none; max-width: 1400px; margin: 0 auto; padding: 12px; }
+header { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 2px solid #e0e0e0; margin-bottom: 16px; }
+header h1 { font-size: 18px; }
+.header-actions button { padding: 10px 20px; border: none; border-radius: 8px; background: #667eea; color: #fff; cursor: pointer; font-size: 14px; font-weight: 600; }
 .sync-status { font-size: 11px; color: #999; margin-top: 4px; text-align: right; }
 .sync-status.synced { color: #27ae60; }
 .sync-status.error { color: #e74c3c; }
 
-/* Settings Panel */
-.settings-panel { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-.settings-panel h2 { font-size: 16px; margin-bottom: 12px; cursor: pointer; user-select: none; }
-.settings-panel h2::before { content: "▼ "; font-size: 12px; }
+.settings-panel { background: #fff; border-radius: 10px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.settings-panel h2 { font-size: 15px; margin-bottom: 12px; cursor: pointer; user-select: none; }
+.settings-panel h2::before { content: "▼ "; font-size: 11px; }
 .settings-panel.collapsed h2::before { content: "▶ "; }
-.settings-panel.collapsed .settings-grid { display: none; }
-.settings-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; }
-.setting-item { display: flex; align-items: center; gap: 8px; }
-.setting-item label { font-size: 13px; color: #666; white-space: nowrap; min-width: 100px; }
-.setting-item input { flex: 1; padding: 8px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+.settings-panel.collapsed .settings-grid,
+.settings-panel.collapsed .derived-values { display: none; }
+.settings-grid { display: grid; grid-template-columns: 1fr; gap: 10px; }
+.setting-item { display: flex; flex-direction: column; gap: 4px; }
+.setting-item label { font-size: 12px; color: #888; }
+.setting-item input { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; -webkit-appearance: none; }
 .setting-item .hint { font-size: 11px; color: #aaa; }
-.derived-values { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; display: flex; gap: 24px; font-size: 13px; }
+.derived-values { margin-top: 12px; padding-top: 12px; border-top: 1px solid #eee; font-size: 12px; display: flex; flex-direction: column; gap: 4px; }
 .derived-values span { color: #667eea; font-weight: 600; }
 
-/* Chart */
-.chart-container { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-.chart-container canvas { max-height: 300px; }
+.chart-container { background: #fff; border-radius: 10px; padding: 8px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.chart-container canvas { max-height: 200px; }
 
-/* Table */
-.table-container { background: #fff; border-radius: 10px; padding: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow-x: auto; }
-.table-container h2 { font-size: 16px; margin-bottom: 12px; }
+.summary-cards { display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px; margin-bottom: 16px; }
+.summary-card { background: #fff; border-radius: 10px; padding: 12px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); }
+.summary-card .label { font-size: 11px; color: #999; }
+.summary-card .value { font-size: 18px; font-weight: 700; margin-top: 2px; }
+.summary-card .sub { font-size: 11px; color: #999; margin-top: 2px; }
+
+/* Table - desktop */
+.table-container { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); overflow-x: auto; }
+.table-container h2 { font-size: 15px; margin-bottom: 12px; }
 .table-actions { display: flex; gap: 8px; margin-bottom: 12px; }
-.table-actions button { padding: 6px 14px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 13px; }
-.table-actions button:hover { background: #f0f0f0; }
+.table-actions button { padding: 10px 16px; border: 1px solid #ddd; border-radius: 8px; background: #fff; cursor: pointer; font-size: 14px; }
 table { width: 100%; border-collapse: collapse; font-size: 13px; }
 th { background: #f8f9fa; padding: 10px 8px; text-align: right; border-bottom: 2px solid #e0e0e0; white-space: nowrap; font-size: 12px; }
 th:nth-child(1), th:nth-child(2) { text-align: center; }
 td { padding: 8px; text-align: right; border-bottom: 1px solid #f0f0f0; }
 td:nth-child(1) { text-align: center; font-weight: 600; color: #667eea; }
 td:nth-child(2) { text-align: center; }
-tr:hover { background: #fafbff; }
 td input { width: 100%; padding: 4px 6px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; text-align: right; }
 td input[type="date"] { text-align: center; }
 .calculated { color: #666; }
@@ -73,29 +69,51 @@ td input[type="date"] { text-align: center; }
 .delete-btn { background: none; border: none; color: #ccc; cursor: pointer; font-size: 16px; padding: 2px 6px; }
 .delete-btn:hover { color: #e74c3c; }
 
-/* GAS Config */
-.gas-config { background: #fff3cd; border-radius: 8px; padding: 12px 16px; margin-bottom: 20px; font-size: 13px; display: flex; align-items: center; gap: 8px; }
-.gas-config input { flex: 1; padding: 6px 10px; border: 1px solid #ddd; border-radius: 4px; font-size: 13px; }
-.gas-config button { padding: 6px 12px; border: none; border-radius: 4px; background: #667eea; color: #fff; cursor: pointer; font-size: 13px; }
+/* Mobile cards */
+.cards-container { display: none; }
 
-/* Summary cards */
-.summary-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin-bottom: 20px; }
-.summary-card { background: #fff; border-radius: 10px; padding: 16px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
-.summary-card .label { font-size: 12px; color: #999; }
-.summary-card .value { font-size: 20px; font-weight: 700; margin-top: 4px; }
-.summary-card .sub { font-size: 12px; color: #999; margin-top: 2px; }
+.month-card { background: #fff; border-radius: 10px; padding: 14px; margin-bottom: 10px; box-shadow: 0 1px 4px rgba(0,0,0,0.08); border-left: 3px solid #667eea; }
+.card-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+.card-month { font-size: 16px; font-weight: 700; color: #667eea; }
+.card-date input { padding: 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; min-height: 44px; }
+.card-delete { background: none; border: none; color: #ccc; font-size: 20px; padding: 4px 8px; cursor: pointer; }
+.card-inputs { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 10px; }
+.card-field { display: flex; flex-direction: column; gap: 2px; }
+.card-field label { font-size: 11px; color: #888; }
+.card-field input { padding: 10px; border: 1px solid #ddd; border-radius: 8px; font-size: 16px; min-height: 44px; -webkit-appearance: none; }
+.card-field .val { font-size: 14px; font-weight: 500; padding: 4px 0; }
+.card-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; font-size: 12px; color: #666; }
+.card-stats .stat-label { color: #999; }
+.card-stats .stat-val { font-weight: 600; }
+.card-stats .highlight { color: #667eea; }
+.card-return { font-size: 14px; font-weight: 700; text-align: right; margin-top: 6px; }
+
+/* GAS config hidden */
+.gas-config { display: none; }
+
+@media (min-width: 769px) {
+  #app { padding: 16px; }
+  header h1 { font-size: 22px; }
+  .settings-grid { grid-template-columns: repeat(3, 1fr); }
+  .setting-item { flex-direction: row; align-items: center; gap: 8px; }
+  .setting-item label { min-width: 80px; }
+  .derived-values { flex-direction: row; gap: 24px; }
+  .summary-cards { grid-template-columns: repeat(4, 1fr); gap: 12px; }
+  .summary-card .value { font-size: 20px; }
+  .chart-container { padding: 20px; }
+  .chart-container canvas { max-height: 300px; }
+}
 
 @media (max-width: 768px) {
-  .settings-grid { grid-template-columns: 1fr; }
-  .summary-cards { grid-template-columns: repeat(2, 1fr); }
-  table { font-size: 11px; }
-  th, td { padding: 6px 4px; }
+  .table-container table,
+  .table-container thead,
+  .table-container .table-actions { display: none; }
+  .cards-container { display: block; }
 }
 </style>
 </head>
 <body>
 
-<!-- Login Screen -->
 <div id="login-screen">
   <div class="login-box">
     <h1>ETF 存股追蹤</h1>
@@ -106,27 +124,24 @@ td input[type="date"] { text-align: center; }
   </div>
 </div>
 
-<!-- Main App -->
 <div id="app">
   <header>
     <h1>ETF 存股投資追蹤</h1>
     <div>
       <div class="header-actions">
-        <button class="primary" onclick="saveToSheet()">儲存</button>
+        <button onclick="saveToSheet()">儲存</button>
       </div>
       <div class="sync-status" id="sync-status"></div>
     </div>
   </header>
 
-  <!-- GAS URL Config -->
   <div class="gas-config" id="gas-config">
     <span>Google Apps Script URL：</span>
     <input type="text" id="gas-url" placeholder="貼上你的 Apps Script Web App URL">
     <button onclick="saveGasUrl()">儲存</button>
   </div>
 
-  <!-- Settings -->
-  <div class="settings-panel" id="settings-panel">
+  <div class="settings-panel collapsed" id="settings-panel">
     <h2 onclick="toggleSettings()">投資參數設定</h2>
     <div class="settings-grid">
       <div class="setting-item">
@@ -158,20 +173,17 @@ td input[type="date"] { text-align: center; }
       </div>
     </div>
     <div class="derived-values">
-      <div>R (實質月報酬率) = <span id="d-R">0.0055</span></div>
+      <div>R = <span id="d-R">0.0055</span></div>
       <div>每月基礎投入 $C = <span id="d-C">280,468</span></div>
     </div>
   </div>
 
-  <!-- Summary Cards -->
   <div class="summary-cards" id="summary-cards"></div>
 
-  <!-- Chart -->
   <div class="chart-container">
     <canvas id="chart"></canvas>
   </div>
 
-  <!-- Data Table -->
   <div class="table-container">
     <h2>月投資紀錄</h2>
     <div class="table-actions">
@@ -180,23 +192,16 @@ td input[type="date"] { text-align: center; }
     <table>
       <thead>
         <tr>
-          <th>月</th>
-          <th>購買日期</th>
-          <th>存股路徑</th>
-          <th>股價</th>
-          <th>累計市值</th>
-          <th>應買股數</th>
-          <th>實際股數</th>
-          <th>投資金額</th>
-          <th>投資累計</th>
-          <th>股數累計</th>
-          <th>庫存現值</th>
-          <th>投報率</th>
-          <th></th>
+          <th>月</th><th>購買日期</th><th>存股路徑</th><th>股價</th><th>累計市值</th><th>應買股數</th><th>實際股數</th><th>投資金額</th><th>投資累計</th><th>股數累計</th><th>庫存現值</th><th>投報率</th><th></th>
         </tr>
       </thead>
       <tbody id="data-tbody"></tbody>
     </table>
+    <!-- Mobile cards -->
+    <div class="cards-container" id="cards-container"></div>
+    <div style="margin-top:12px;">
+      <button onclick="addRow()" style="width:100%;padding:12px;border:1px dashed #ccc;border-radius:8px;background:#fafafa;font-size:14px;cursor:pointer;">+ 新增月份</button>
+    </div>
   </div>
 </div>
 
@@ -205,15 +210,7 @@ const PASSWORD = '0000';
 const STORAGE_KEY = 'etf-tracker-data';
 const GAS_URL_KEY = 'etf-tracker-gas-url';
 
-let settings = {
-  target: 65000000,
-  current: 0,
-  months: 120,
-  monthlyReturn: 0.0085,
-  monthlyInflation: 0.0025,
-  etf: '006208'
-};
-
+let settings = { target: 65000000, current: 0, months: 120, monthlyReturn: 0.0085, monthlyInflation: 0.0025, etf: '006208' };
 let entries = [
   { month: 1, date: '2025-08-25', price: 123.75, shares: 2200 },
   { month: 2, date: '2025-09-25', price: 133.10, shares: 2000 },
@@ -221,13 +218,16 @@ let entries = [
   { month: 4, date: '2025-11-26', price: 137.30, shares: 2000 },
   { month: 5, date: '2025-12-23', price: 145.45, shares: 2000 },
 ];
-
 let chart = null;
+let hasUnsavedChanges = false;
 
-// --- Auth ---
+function markDirty() { hasUnsavedChanges = true; }
+window.addEventListener('beforeunload', e => { if (hasUnsavedChanges) { e.preventDefault(); e.returnValue = ''; } });
+
+function isMobile() { return window.innerWidth <= 768; }
+
 function tryLogin() {
-  const pw = document.getElementById('password-input').value;
-  if (pw === PASSWORD) {
+  if (document.getElementById('password-input').value === PASSWORD) {
     sessionStorage.setItem('etf-authed', '1');
     showApp();
   } else {
@@ -243,107 +243,40 @@ function showApp() {
   initApp();
 }
 
-// --- Core Formulas ---
-function getR() {
-  return (settings.monthlyReturn + settings.monthlyInflation) / 2;
-}
+function getR() { return (settings.monthlyReturn + settings.monthlyInflation) / 2; }
+function getC() { const R = getR(); return settings.target / (settings.months * Math.pow(1 + R, settings.months)); }
+function getPath(month) { return getC() * month * Math.pow(1 + getR(), month); }
 
-function getC() {
-  const R = getR();
-  const T = settings.months;
-  return settings.target / (T * Math.pow(1 + R, T));
-}
-
-function getPath(month) {
-  const R = getR();
-  const C = getC();
-  return C * month * Math.pow(1 + R, month);
-}
-
-function computeRow(index) {
-  const e = entries[index];
-  const month = e.month;
-  const path = getPath(month);
-  const price = e.price || 0;
-  const actualShares = e.shares || 0;
-
-  let prevCumulativeShares = 0;
-  let prevCumulativeInvestment = 0;
-  let prevCumulativeProfit = 0;
-  if (index > 0) {
-    const prev = computeRow(index - 1);
-    prevCumulativeShares = prev.cumulativeShares;
-    prevCumulativeInvestment = prev.cumulativeInvestment;
-    prevCumulativeProfit = prev.cumulativeProfit;
-  }
-
-  const marketValueBefore = prevCumulativeShares * price;
-  const suggestedShares = price > 0 ? (path - marketValueBefore) / price : 0;
-  const investmentAmount = price * actualShares;
-  const cumulativeInvestment = prevCumulativeInvestment + investmentAmount;
-  const cumulativeShares = prevCumulativeShares + actualShares;
-  const currentValue = price * cumulativeShares;
-  const sellProfit = investmentAmount > 0 ? 0 : -investmentAmount;
-  const cumulativeProfit = sellProfit + prevCumulativeProfit;
-  const returnRate = currentValue > 0 && cumulativeInvestment > 0
-    ? (currentValue - cumulativeInvestment) / cumulativeInvestment : 0;
-
-  return {
-    month, path, price, marketValueBefore, suggestedShares,
-    actualShares, investmentAmount, cumulativeInvestment,
-    cumulativeShares, currentValue, sellProfit, cumulativeProfit, returnRate
-  };
-}
-
-// Memoized compute all
 function computeAll() {
   const results = [];
   for (let i = 0; i < entries.length; i++) {
-    const e = entries[i];
-    const month = e.month;
-    const path = getPath(month);
-    const price = e.price || 0;
-    const actualShares = e.shares || 0;
-
+    const e = entries[i], path = getPath(e.month), price = e.price || 0, actualShares = e.shares || 0;
     const prev = i > 0 ? results[i - 1] : null;
-    const prevCumulativeShares = prev ? prev.cumulativeShares : 0;
-    const prevCumulativeInvestment = prev ? prev.cumulativeInvestment : 0;
-    const prevCumulativeProfit = prev ? prev.cumulativeProfit : 0;
-
-    const marketValueBefore = prevCumulativeShares * price;
+    const prevCS = prev ? prev.cumulativeShares : 0, prevCI = prev ? prev.cumulativeInvestment : 0;
+    const marketValueBefore = prevCS * price;
     const suggestedShares = price > 0 ? (path - marketValueBefore) / price : 0;
     const investmentAmount = price * actualShares;
-    const cumulativeInvestment = prevCumulativeInvestment + investmentAmount;
-    const cumulativeShares = prevCumulativeShares + actualShares;
+    const cumulativeInvestment = prevCI + investmentAmount;
+    const cumulativeShares = prevCS + actualShares;
     const currentValue = price * cumulativeShares;
-    const sellProfit = investmentAmount > 0 ? 0 : -investmentAmount;
-    const cumulativeProfit = sellProfit + prevCumulativeProfit;
-    const returnRate = currentValue > 0 && cumulativeInvestment > 0
-      ? (currentValue - cumulativeInvestment) / cumulativeInvestment : 0;
-
-    results.push({
-      month, path, price, marketValueBefore, suggestedShares,
-      actualShares, investmentAmount, cumulativeInvestment,
-      cumulativeShares, currentValue, sellProfit, cumulativeProfit, returnRate
-    });
+    const returnRate = currentValue > 0 && cumulativeInvestment > 0 ? (currentValue - cumulativeInvestment) / cumulativeInvestment : 0;
+    results.push({ month: e.month, path, price, marketValueBefore, suggestedShares, actualShares, investmentAmount, cumulativeInvestment, cumulativeShares, currentValue, returnRate });
   }
   return results;
 }
 
-// --- Formatting ---
-function fmt(n, decimals = 0) {
-  if (n == null || isNaN(n)) return '-';
-  return n.toLocaleString('zh-TW', { minimumFractionDigits: decimals, maximumFractionDigits: decimals });
-}
-function fmtPct(n) {
-  if (n == null || isNaN(n)) return '-';
-  return (n * 100).toFixed(2) + '%';
+function fmt(n, d = 0) { return n == null || isNaN(n) ? '-' : n.toLocaleString('zh-TW', { minimumFractionDigits: d, maximumFractionDigits: d }); }
+function fmtPct(n) { return n == null || isNaN(n) ? '-' : (n * 100).toFixed(2) + '%'; }
+function fmtShort(n) {
+  if (n >= 1e8) return '$' + (n / 1e8).toFixed(1) + '億';
+  if (n >= 1e4) return '$' + (n / 1e4).toFixed(0) + '萬';
+  return '$' + fmt(n);
 }
 
-// --- Render ---
 function render() {
   updateDerivedValues();
   renderTable();
+  renderCards();
   renderChart();
   renderSummary();
   saveToStorage();
@@ -356,9 +289,8 @@ function updateDerivedValues() {
 }
 
 function renderTable() {
-  const tbody = document.getElementById('data-tbody');
   const results = computeAll();
-  tbody.innerHTML = results.map((r, i) => `
+  document.getElementById('data-tbody').innerHTML = results.map((r, i) => `
     <tr>
       <td>${r.month}</td>
       <td><input type="date" value="${entries[i].date || ''}" onchange="updateEntry(${i},'date',this.value)"></td>
@@ -372,20 +304,51 @@ function renderTable() {
       <td class="calculated">${fmt(r.cumulativeShares)}</td>
       <td class="calculated">${fmt(r.currentValue)}</td>
       <td class="${r.returnRate >= 0 ? 'positive' : 'negative'}">${r.price > 0 ? fmtPct(r.returnRate) : '-'}</td>
-      <td><button class="delete-btn" onclick="deleteRow(${i})" title="刪除">×</button></td>
+      <td><button class="delete-btn" onclick="deleteRow(${i})">×</button></td>
     </tr>
+  `).join('');
+}
+
+function renderCards() {
+  const results = computeAll();
+  document.getElementById('cards-container').innerHTML = results.map((r, i) => `
+    <div class="month-card">
+      <div class="card-header">
+        <span class="card-month">第 ${r.month} 月</span>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <input type="date" value="${entries[i].date || ''}" onchange="updateEntry(${i},'date',this.value)" class="card-date" style="padding:6px;border:1px solid #ddd;border-radius:6px;font-size:13px;">
+          <button class="card-delete" onclick="deleteRow(${i})">×</button>
+        </div>
+      </div>
+      <div class="card-inputs">
+        <div class="card-field">
+          <label>股價</label>
+          <input type="number" value="${entries[i].price || ''}" step="0.01" onchange="updateEntry(${i},'price',parseFloat(this.value))">
+        </div>
+        <div class="card-field">
+          <label>實際股數</label>
+          <input type="number" value="${entries[i].shares || ''}" step="1" onchange="updateEntry(${i},'shares',parseInt(this.value))">
+        </div>
+      </div>
+      <div class="card-stats">
+        <div><span class="stat-label">存股路徑</span> <span class="stat-val highlight">${fmt(r.path)}</span></div>
+        <div><span class="stat-label">應買股數</span> <span class="stat-val">${fmt(r.suggestedShares, 0)}</span></div>
+        <div><span class="stat-label">投資累計</span> <span class="stat-val">$${fmt(r.cumulativeInvestment)}</span></div>
+        <div><span class="stat-label">庫存現值</span> <span class="stat-val">$${fmt(r.currentValue)}</span></div>
+      </div>
+      ${r.price > 0 ? `<div class="card-return ${r.returnRate >= 0 ? 'positive' : 'negative'}">${fmtPct(r.returnRate)}</div>` : ''}
+    </div>
   `).join('');
 }
 
 function renderChart() {
   const results = computeAll();
-  const months = [];
-  const pathData = [];
-  const actualData = [];
+  const mobile = isMobile();
+  const lastMonth = entries.length > 0 ? entries[entries.length - 1].month : 0;
+  const showMonths = mobile ? Math.max(lastMonth + 3, 12) : settings.months;
 
-  // Show path line for all planned months
-  const totalMonths = settings.months;
-  for (let m = 1; m <= totalMonths; m++) {
+  const months = [], pathData = [], actualData = [];
+  for (let m = 1; m <= showMonths; m++) {
     months.push(m);
     pathData.push(Math.round(getPath(m)));
     const entry = results.find(r => r.month === m);
@@ -399,45 +362,20 @@ function renderChart() {
     data: {
       labels: months,
       datasets: [
-        {
-          label: '存股路徑 (目標)',
-          data: pathData,
-          borderColor: '#667eea',
-          backgroundColor: 'rgba(102,126,234,0.1)',
-          fill: true,
-          tension: 0.3,
-          pointRadius: 0,
-          borderWidth: 2,
-        },
-        {
-          label: '實際庫存現值',
-          data: actualData,
-          borderColor: '#27ae60',
-          backgroundColor: 'rgba(39,174,96,0.1)',
-          fill: false,
-          tension: 0.1,
-          pointRadius: 4,
-          borderWidth: 2,
-          spanGaps: false,
-        }
+        { label: '存股路徑', data: pathData, borderColor: '#667eea', backgroundColor: 'rgba(102,126,234,0.1)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 },
+        { label: '實際現值', data: actualData, borderColor: '#27ae60', backgroundColor: 'rgba(39,174,96,0.1)', fill: false, tension: 0.1, pointRadius: mobile ? 5 : 4, borderWidth: 2, spanGaps: false }
       ]
     },
     options: {
       responsive: true,
+      maintainAspectRatio: true,
       plugins: {
-        legend: { position: 'top' },
-        tooltip: {
-          callbacks: {
-            label: ctx => `${ctx.dataset.label}: $${fmt(ctx.parsed.y)}`
-          }
-        }
+        legend: { position: 'top', labels: { boxWidth: 12, font: { size: mobile ? 11 : 12 } } },
+        tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: ${fmtShort(ctx.parsed.y)}` } }
       },
       scales: {
-        x: { title: { display: true, text: '投資月數' } },
-        y: {
-          title: { display: true, text: '金額 (元)' },
-          ticks: { callback: v => '$' + fmt(v) }
-        }
+        x: { title: { display: !mobile, text: '投資月數' }, ticks: { maxTicksLimit: mobile ? 6 : 12 } },
+        y: { title: { display: !mobile, text: '金額' }, ticks: { callback: v => fmtShort(v), maxTicksLimit: mobile ? 5 : 8 } }
       }
     }
   });
@@ -447,58 +385,32 @@ function renderSummary() {
   const results = computeAll();
   const last = results.length > 0 ? results[results.length - 1] : null;
   const container = document.getElementById('summary-cards');
-
-  if (!last || last.price === 0) {
-    container.innerHTML = '<div class="summary-card"><div class="label">尚無資料</div><div class="value">-</div></div>';
-    return;
-  }
-
+  if (!last || last.price === 0) { container.innerHTML = '<div class="summary-card"><div class="label">尚無資料</div><div class="value">-</div></div>'; return; }
   const progress = (last.currentValue / settings.target * 100).toFixed(1);
-  const monthsLeft = settings.months - last.month;
-
   container.innerHTML = `
-    <div class="summary-card">
-      <div class="label">庫存現值</div>
-      <div class="value">$${fmt(last.currentValue)}</div>
-      <div class="sub">累計投入 $${fmt(last.cumulativeInvestment)}</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">投報率</div>
-      <div class="value" style="color:${last.returnRate >= 0 ? '#27ae60' : '#e74c3c'}">${fmtPct(last.returnRate)}</div>
-      <div class="sub">目標進度 ${progress}%</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">累計股數</div>
-      <div class="value">${fmt(last.cumulativeShares)} 股</div>
-      <div class="sub">${settings.etf}</div>
-    </div>
-    <div class="summary-card">
-      <div class="label">剩餘月數</div>
-      <div class="value">${monthsLeft} 個月</div>
-      <div class="sub">已投資 ${last.month} 個月</div>
-    </div>
+    <div class="summary-card"><div class="label">庫存現值</div><div class="value">$${fmt(last.currentValue)}</div><div class="sub">投入 $${fmt(last.cumulativeInvestment)}</div></div>
+    <div class="summary-card"><div class="label">投報率</div><div class="value" style="color:${last.returnRate >= 0 ? '#27ae60' : '#e74c3c'}">${fmtPct(last.returnRate)}</div><div class="sub">進度 ${progress}%</div></div>
+    <div class="summary-card"><div class="label">累計股數</div><div class="value">${fmt(last.cumulativeShares)}</div><div class="sub">${settings.etf}</div></div>
+    <div class="summary-card"><div class="label">剩餘</div><div class="value">${settings.months - last.month} 月</div><div class="sub">已投 ${last.month} 月</div></div>
   `;
 }
 
-// --- User Actions ---
-function updateEntry(index, field, value) {
-  entries[index][field] = value;
-  render();
-}
+function updateEntry(index, field, value) { entries[index][field] = value; render(); }
 
 function addRow() {
   const lastMonth = entries.length > 0 ? entries[entries.length - 1].month : 0;
   entries.push({ month: lastMonth + 1, date: '', price: null, shares: null });
   render();
-  // Scroll to bottom
-  const tbody = document.getElementById('data-tbody');
-  tbody.lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  if (isMobile()) {
+    document.getElementById('cards-container').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  } else {
+    document.getElementById('data-tbody').lastElementChild?.scrollIntoView({ behavior: 'smooth' });
+  }
 }
 
 function deleteRow(index) {
-  if (!confirm(`確定要刪除第 ${entries[index].month} 個月的資料？`)) return;
+  if (!confirm(`刪除第 ${entries[index].month} 月？`)) return;
   entries.splice(index, 1);
-  // Re-number months
   entries.forEach((e, i) => e.month = i + 1);
   render();
 }
@@ -513,84 +425,37 @@ function onSettingsChange() {
   render();
 }
 
-function toggleSettings() {
-  document.getElementById('settings-panel').classList.toggle('collapsed');
-}
+function toggleSettings() { document.getElementById('settings-panel').classList.toggle('collapsed'); }
 
-// --- Storage ---
-function saveToStorage() {
-  const data = { settings, entries, version: 1 };
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-}
+function saveToStorage() { localStorage.setItem(STORAGE_KEY, JSON.stringify({ settings, entries, version: 1 })); }
 
 function loadFromStorage() {
   const raw = localStorage.getItem(STORAGE_KEY);
-  if (raw) {
-    try {
-      const data = JSON.parse(raw);
-      if (data.settings) settings = data.settings;
-      if (data.entries) entries = data.entries;
-    } catch (e) { /* ignore */ }
-  }
-  // Update settings inputs
+  if (raw) { try { const d = JSON.parse(raw); if (d.settings) settings = d.settings; if (d.entries) entries = d.entries; } catch(e){} }
   document.getElementById('s-target').value = settings.target;
   document.getElementById('s-current').value = settings.current;
   document.getElementById('s-months').value = settings.months;
   document.getElementById('s-return').value = settings.monthlyReturn;
   document.getElementById('s-inflation').value = settings.monthlyInflation;
   document.getElementById('s-etf').value = settings.etf;
-
-  // Load GAS URL
   const gasUrl = localStorage.getItem(GAS_URL_KEY);
-  if (gasUrl) {
-    document.getElementById('gas-url').value = gasUrl;
-    document.getElementById('gas-config').style.background = '#d4edda';
-  }
+  if (gasUrl) document.getElementById('gas-url').value = gasUrl;
 }
-
-// --- Google Sheet Sync ---
-let hasUnsavedChanges = false;
-
-function markDirty() {
-  hasUnsavedChanges = true;
-}
-
-window.addEventListener('beforeunload', function(e) {
-  if (hasUnsavedChanges) {
-    e.preventDefault();
-    e.returnValue = '';
-  }
-});
 
 function saveGasUrl() {
   const url = document.getElementById('gas-url').value.trim();
-  if (url) {
-    localStorage.setItem(GAS_URL_KEY, url);
-    document.getElementById('gas-config').style.background = '#d4edda';
-    setSyncStatus('URL 已儲存', 'synced');
-  }
+  if (url) { localStorage.setItem(GAS_URL_KEY, url); setSyncStatus('URL 已儲存', 'synced'); }
 }
 
 async function saveToSheet() {
   const url = localStorage.getItem(GAS_URL_KEY);
-  if (!url) {
-    alert('請先設定 Google Apps Script URL');
-    return;
-  }
+  if (!url) { saveToStorage(); hasUnsavedChanges = false; setSyncStatus('已儲存 (本地)', 'synced'); return; }
   setSyncStatus('儲存中...', '');
   try {
-    const data = { settings, entries, version: 1 };
-    const resp = await fetch(url, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain' },
-      body: JSON.stringify(data)
-    });
+    await fetch(url, { method: 'POST', mode: 'no-cors', headers: { 'Content-Type': 'text/plain' }, body: JSON.stringify({ settings, entries, version: 1 }) });
     hasUnsavedChanges = false;
     setSyncStatus('已儲存 ' + new Date().toLocaleTimeString(), 'synced');
-  } catch (err) {
-    setSyncStatus('儲存失敗: ' + err.message, 'error');
-  }
+  } catch (err) { setSyncStatus('儲存失敗', 'error'); }
 }
 
 async function loadFromSheet() {
@@ -608,28 +473,17 @@ async function loadFromSheet() {
     document.getElementById('s-inflation').value = settings.monthlyInflation;
     document.getElementById('s-etf').value = settings.etf;
     render();
-    setSyncStatus('已從 Sheet 載入 ' + new Date().toLocaleTimeString(), 'synced');
-  } catch (err) {
-    // Silent fail — use local data
-  }
+    setSyncStatus('已載入', 'synced');
+  } catch (err) {}
 }
 
-function setSyncStatus(text, cls) {
-  const el = document.getElementById('sync-status');
-  el.textContent = text;
-  el.className = 'sync-status ' + (cls || '');
-}
+function setSyncStatus(text, cls) { const el = document.getElementById('sync-status'); el.textContent = text; el.className = 'sync-status ' + (cls || ''); }
 
-// --- Init ---
-function initApp() {
-  render();
-  loadFromSheet();
-}
+function initApp() { render(); loadFromSheet(); }
 
-// Auto-login if session valid
-if (sessionStorage.getItem('etf-authed') === '1') {
-  showApp();
-}
+window.addEventListener('resize', () => { renderChart(); });
+
+if (sessionStorage.getItem('etf-authed') === '1') { showApp(); }
 </script>
 </body>
 </html>
